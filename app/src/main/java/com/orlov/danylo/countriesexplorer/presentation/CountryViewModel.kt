@@ -10,20 +10,20 @@ import com.orlov.danylo.countriesexplorer.domain.Country
 
 class CountryViewModel(
     dispatchers: DispatcherCall,
-    private val quoteUseCase: AllCountriesUseCase,
-    private val quoteCommunication: CountryCommunication.Mutable
+    private val countryUseCase: AllCountriesUseCase,
+    private val countryCommunication: CountryCommunication.Mutable
 ) : ViewModel(), CountryCommunication.Observe {
 
     init {
         dispatchers.io(viewModelScope) {
-            val quote = quoteUseCase.countries()
+            val country = countryUseCase.countries()
             dispatchers.switchUi {
-                quoteCommunication.update(quote)
+                countryCommunication.update(country)
             }
         }
     }
 
     override fun observe(lifecycleOwner: LifecycleOwner, observer: Observer<List<Country>>) {
-        quoteCommunication.observe(lifecycleOwner, observer)
+        countryCommunication.observe(lifecycleOwner, observer)
     }
 }

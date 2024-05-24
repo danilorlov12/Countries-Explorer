@@ -20,25 +20,25 @@ interface ProvideCountriesRepository : ProvideRepository<CountriesRepository> {
     ) : ProvideCountriesRepository {
 
         private val serialization = Serialization.Base(ProvideGson.Base())
-        private val quoteCloudToCacheMapper: CountryRemoteListToCacheListMapper =
+        private val countryCloudToCacheMapper: CountryRemoteListToCacheListMapper =
             CountryRemoteListToCacheListMapper.Base(CountryRemoteToCacheMapper.Base())
 
-        private fun quoteCacheDataSource(): CountriesCacheDataSource {
+        private fun countryCacheDataSource(): CountriesCacheDataSource {
             return CountriesCacheDataSource.Base(
                 provideDao.provide(CountriesDao::class.java),
                 serialization
             )
         }
 
-        private fun quotesCloudDataSource(): CountriesRemoteDataSource {
+        private fun countryCloudDataSource(): CountriesRemoteDataSource {
             return CountriesRemoteDataSource.Base(createService.create(CountriesService::class.java))
         }
 
         override fun provide(): CountriesRepository {
             return CountriesRepository.Base(
-                quoteCacheDataSource(),
-                quotesCloudDataSource(),
-                quoteCloudToCacheMapper,
+                countryCacheDataSource(),
+                countryCloudDataSource(),
+                countryCloudToCacheMapper,
                 provideDao.provide(CountriesDao::class.java)
             )
         }
